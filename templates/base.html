@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flash.css') }}">
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div id="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <header>
+        <nav class="navbar navbar-light bg-light">
+            <h1>Миссия Колонизация Марса</h1>
+            {% if current_user.is_authenticated %}
+                <a href ="/personal" class="navbar-brand">{{ current_user.name }} {{ current_user.surname }}</a>
+<!--                <a class="btn btn btn-danger " href="/logout">Выйти</a>-->
+<!--                <a class="btn btn-warning " href="/add_job">Добавить работу</a>-->
+            {% else %}
+                <p>
+                    <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
+                    <a class="btn btn-success" href="/login">Войти</a>
+                </p>
+            {% endif %}
+            <a href="/" style="text-decoration: none; color: inherit;">
+                <h5>Mars One</h5>
+            </a>
+        </nav>
+        <h4 class="text-secondary" style="margin-left: 18px">И на Марсе будут яблони цвести!</h4>
+    </header>
+    <!-- Begin page content -->
+    <main role="main" class="container">
+        {% block content %}{% endblock %}
+    </main>
+    <script src="{{ url_for('static', filename='js/flash.js') }}"></script>
+</body>
+</html>
